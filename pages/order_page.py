@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from .base_page import BasePage
+from data import TestData
 
 class OrderPage(BasePage):
     NAME_INPUT = (By.XPATH, "//input[@placeholder='* Имя']")
@@ -71,3 +72,19 @@ class OrderPage(BasePage):
     
     def get_success_message_text(self):
         return self.find_element(self.SUCCESS_MESSAGE).text
+    
+    def fill_order_data(self, order_data):
+        self.fill_personal_info(
+            order_data["name"],
+            order_data["surname"],
+            order_data["address"],
+            order_data["metro_station"],
+            order_data["phone"]
+        )
+        self.click_next_button()
+        self.fill_rental_info(
+            order_data["date"],
+            order_data["rental_period"],
+            order_data["color"],
+            order_data["comment"]
+        )

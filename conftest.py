@@ -1,6 +1,9 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
+from pages.main_page import MainPage
+from pages.order_page import OrderPage
+
 
 @pytest.fixture(scope="function")
 def driver():
@@ -11,14 +14,8 @@ def driver():
 
 @pytest.fixture
 def main_page(driver):
-    from pages.main_page import MainPage
     return MainPage(driver)
 
 @pytest.fixture
 def order_page(driver):
-    from pages.order_page import OrderPage
     return OrderPage(driver)
-
-@pytest.fixture
-def wait(driver):
-    return WebDriverWait(driver, 10)

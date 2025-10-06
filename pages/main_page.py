@@ -73,26 +73,21 @@ class MainPage(BasePage):
         self.click_element(self.YANDEX_LOGO)
     
     def scroll_to_questions(self):
-        questions_section = self.find_element((By.ID, "accordion__heading-7"))
-        self.driver.execute_script("arguments[0].scrollIntoView();", questions_section)
+        questions_section = (By.ID, "accordion__heading-7")
+        self.scroll_to_bottom_of_element(questions_section)
         
     def scroll_to_bottom_order_button(self):
         self.scroll_to_element(self.ORDER_BUTTON_BOTTOM)
     
     def is_main_page_loaded(self):
-        try:
-            WebDriverWait(self.driver, 10).until(
-                lambda driver: self.base_url in driver.current_url
-            )
-            return True
-        except:
-            return False
+        return self.wait_for_page_loaded(self.base_url)
     
     def is_dzen_page_loaded(self):
-        try:
-            WebDriverWait(self.driver, 10).until(
-                lambda driver: "dzen.ru" in driver.current_url
-            )
-            return True
-        except:
-            return False
+        return self.wait_for_page_loaded("dzen.ru")
+
+    def get_current_window(self):
+        return self.current_window_handle()
+    
+    def close_and_switch_window(self, window):
+        return self.close_and_switch_to_selected_window(window)
+    

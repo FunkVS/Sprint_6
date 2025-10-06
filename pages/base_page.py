@@ -44,12 +44,16 @@ class BasePage:
     
     def scroll_to_element(self, locator):
         element = self.find_element(locator)
-        self.driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth'});", element)
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', behavior: 'smooth'});", element)
     
     def scroll_to_bottom(self):
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+    def scroll_to_bottom_of_element(self, locator):
+        element = self.find_element(locator)
+        self.driver.execute_script("arguments[0].scrollIntoView();", element)
     
-    def wait_for_element_hidden(self, locator, timeout=2):
+    def wait_for_element_hidden(self, locator, timeout=3):
         try:
             WebDriverWait(self.driver, timeout).until(
                 lambda driver: not driver.find_element(*locator).is_displayed()
@@ -57,3 +61,19 @@ class BasePage:
             return True
         except:
             return False
+        
+    def wait_for_page_loaded(self, page):
+        try:
+            WebDriverWait(self.driver, 10).until(
+                lambda driver: page in driver.current_url
+            )
+            return True
+        except:
+            return False
+        
+    def current_window_handle(self):
+        return self.driver.current_window_handle
+    
+    def close_and_switch_to_selected_window(self, window):
+        self.driver.close()
+        self.driver.switch_to.window(window)
